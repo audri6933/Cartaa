@@ -1,59 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Para mi chaparrita</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(#ffdde1, #ee9ca7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      color: #fff;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2em;
-    }
-    p {
-      font-size: 1.2em;
-    }
-    .heart {
-      position: absolute;
-      top: -10px;
-      color: rgba(255,255,255,0.8);
-      font-size: 20px;
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Para mi chaparrita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  background: #0b0b0b;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+.heart {
+  font-size: 140px;
+  animation: latido 1.2s infinite;
+}
+
+@keyframes latido {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.text {
+  max-width: 220px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.counter {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+}
+
+.petalo {
+  position: fixed;
+  top: -10px;
+  font-size: 18px;
+  animation: caer linear infinite;
+  color: pink;
+  opacity: 0.8;
+}
+
+@keyframes caer {
+  to {
+    transform: translateY(110vh);
+  }
+}
+</style>
 </head>
+
 <body>
 
-<h1>Para mi chaparrita 🤍</h1>
-<p>Escogería una y mil veces tu amistad.</p>
-<p>Nuestra amistad comenzó el<br><strong>3 de octubre de 2023</strong></p>
+<div class="container">
+  <div class="heart">❤️</div>
+  <div class="text">
+    <strong>Para mi chaparrita:</strong><br><br>
+    Escogería una y mil veces tu amistad.<br>
+    Gracias por llegar a mi vida y quedarte.
+  </div>
+</div>
+
+<div class="counter" id="contador"></div>
 
 <script>
-  function createHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.innerHTML = '🤍';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-  }
-  setInterval(createHeart, 300);
+// CONTADOR
+const inicio = new Date("2023-10-03T00:00:00");
+
+function actualizarContador() {
+  const ahora = new Date();
+  let diferencia = ahora - inicio;
+
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  diferencia %= (1000 * 60 * 60 * 24);
+  const horas = Math.floor(diferencia / (1000 * 60 * 60));
+  diferencia %= (1000 * 60 * 60);
+  const minutos = Math.floor(diferencia / (1000 * 60));
+  diferencia %= (1000 * 60);
+  const segundos = Math.floor(diferencia / 1000);
+
+  document.getElementById("contador").innerHTML =
+    `Nuestra amistad comenzó hace<br>
+     ${dias} días ${horas} h ${minutos} m ${segundos} s`;
+}
+
+setInterval(actualizarContador, 1000);
+actualizarContador();
+
+// CORAZONES CAYENDO
+function crearPetalo() {
+  const petalo = document.createElement("div");
+  petalo.classList.add("petalo");
+  petalo.innerHTML = "❤️";
+  petalo.style.left = Math.random() * 100 + "vw";
+  petalo.style.animationDuration = (3 + Math.random() * 5) + "s";
+  document.body.appendChild(petalo);
+
+  setTimeout(() => petalo.remove(), 8000);
+}
+
+setInterval(crearPetalo, 300);
 </script>
 
 </body>
