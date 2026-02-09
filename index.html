@@ -1,152 +1,174 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Para mi chaparrita</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Nuestro amor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(180deg, #ff9acb, #ff5fa2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Arial', sans-serif;
-  overflow: hidden;
-  color: white;
-}
+    body {
+      height: 100vh;
+      background: linear-gradient(180deg, #ffb6c1, #ff69b4);
+      overflow: hidden;
+      color: white;
+    }
 
-h1 {
-  margin-top: 15px;
-  font-size: 1.6em;
-}
+    /* TÍTULO */
+    .title {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      z-index: 10;
+    }
 
-.container {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+    /* CONTENEDOR PRINCIPAL */
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
 
-.heart {
-  width: 160px;
-  height: 160px;
-  background: red;
-  position: relative;
-  transform: rotate(-45deg);
-  animation: pulse 1.5s infinite;
-}
+    /* TEXTO */
+    .text {
+      max-width: 300px;
+      font-size: 1.1em;
+      line-height: 1.5;
+      z-index: 5;
+    }
 
-.heart::before,
-.heart::after {
-  content: "";
-  width: 160px;
-  height: 160px;
-  background: red;
-  border-radius: 50%;
-  position: absolute;
-}
+    /* CORAZÓN GRANDE (ÁRBOL) */
+    .heart-tree {
+      position: relative;
+      width: 260px;
+      height: 240px;
+    }
 
-.heart::before {
-  top: -80px;
-  left: 0;
-}
+    .leaf {
+      position: absolute;
+      color: #ff3366;
+      font-size: 18px;
+      opacity: 0;
+      animation: appear 1s forwards;
+    }
 
-.heart::after {
-  left: 80px;
-  top: 0;
-}
+    @keyframes appear {
+      to {
+        opacity: 1;
+      }
+    }
 
-@keyframes pulse {
-  0% { transform: rotate(-45deg) scale(1); }
-  50% { transform: rotate(-45deg) scale(1.1); }
-  100% { transform: rotate(-45deg) scale(1); }
-}
+    /* HOJAS CAYENDO */
+    .falling-heart {
+      position: absolute;
+      top: -20px;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+      animation: fall linear forwards;
+      pointer-events: none;
+    }
 
-.text {
-  max-width: 200px;
-  font-size: 0.95em;
-  line-height: 1.4;
-}
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
 
-.counter {
-  margin-top: 25px;
-  font-size: 1em;
-  background: rgba(255,255,255,0.25);
-  padding: 10px 18px;
-  border-radius: 20px;
-}
-
-/* corazones cayendo */
-.fall {
-  position: absolute;
-  top: -20px;
-  color: rgba(255,255,255,0.8);
-  font-size: 18px;
-  animation: fall linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
-}
-</style>
+    /* CONTADOR */
+    .counter {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>Para mi chaparrita 🩷</h1>
+  <!-- TÍTULO -->
+  <div class="title">Nuestro amor</div>
 
-<div class="container">
-  <div class="heart"></div>
+  <div class="scene">
+    <!-- CORAZÓN -->
+    <div class="heart-tree" id="heartTree"></div>
 
-  <div class="text">
-    Para alguien muy especial.<br><br>
-    Escogería una y mil veces tu amistad.<br>
-    Gracias por llegar a mi vida y quedarte.
+    <!-- TEXTO -->
+    <div class="text">
+      Desde el primer momento, sin darme cuenta,  
+      fuiste creciendo en mí…  
+      hoja por hoja, latido por latido,  
+      hasta convertirte en amor.
+    </div>
   </div>
-</div>
 
-<div class="counter" id="contador"></div>
+  <!-- CONTADOR -->
+  <div class="counter" id="counter"></div>
 
-<script>
-/* CONTADOR */
-const inicio = new Date("2023-10-03T00:00:00");
+  <script>
+    /* FORMA DEL CORAZÓN (PUNTOS) */
+    const heartPoints = [
+      [130, 40], [110, 20], [80, 20], [60, 40], [60, 70],
+      [80, 100], [130, 140], [180, 100], [200, 70],
+      [200, 40], [180, 20], [150, 20]
+    ];
 
-function actualizar() {
-  const ahora = new Date();
-  const diff = ahora - inicio;
+    const heartTree = document.getElementById('heartTree');
 
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutos = Math.floor((diff / (1000 * 60)) % 60);
+    /* GENERAR CORAZÓN COMO ÁRBOL */
+    heartPoints.forEach((point, i) => {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.innerHTML = '❤';
+      leaf.style.left = point[0] + 'px';
+      leaf.style.top = point[1] + 'px';
+      leaf.style.animationDelay = (i * 0.3) + 's';
+      heartTree.appendChild(leaf);
+    });
 
-  document.getElementById("contador").innerHTML =
-    `Nuestra amistad comenzó hace<br>
-     <b>${dias}</b> días <b>${horas}</b> horas <b>${minutos}</b> minutos`;
-}
+    /* HOJAS CAYENDO */
+    function createFallingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'falling-heart';
+      heart.innerHTML = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+      document.body.appendChild(heart);
 
-setInterval(actualizar, 1000);
-actualizar();
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
 
-/* CORAZONES CAYENDO */
-function crearCorazon() {
-  const c = document.createElement("div");
-  c.className = "fall";
-  c.innerHTML = "❤";
-  c.style.left = Math.random() * 100 + "vw";
-  c.style.animationDuration = (3 + Math.random() * 3) + "s";
-  document.body.appendChild(c);
+    setInterval(createFallingHeart, 600);
 
-  setTimeout(() => c.remove(), 6000);
-}
+    /* CONTADOR */
+    const startDate = new Date("2023-10-03"); // CAMBIA ESTA FECHA ❤️
+    const counter = document.getElementById('counter');
 
-setInterval(crearCorazon, 300);
-</script>
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      counter.textContent = `Juntos desde hace ${days} días`;
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 60000);
+  </script>
 
 </body>
 </html>
