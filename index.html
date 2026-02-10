@@ -44,10 +44,10 @@ body {
 
 .leaf {
   position: absolute;
-  font-size: 18px;
+  font-size: 16px;
   color: #ff2f68;
   opacity: 0;
-  animation: aparecer 0.9s forwards;
+  animation: aparecer 0.8s forwards;
 }
 
 @keyframes aparecer {
@@ -59,6 +59,7 @@ body {
   max-width: 240px;
   font-size: 16px;
   line-height: 1.5;
+  margin-top: -20px; /* 👈 SUBE un poco el texto */
 }
 
 /* CONTADOR */
@@ -82,16 +83,17 @@ body {
   to { transform: translateY(110vh); }
 }
 
-/* 📱 RESPONSIVE CELULAR */
+/* 📱 RESPONSIVE */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
     text-align: center;
-    padding-top: 80px;
+    padding-top: 90px;
   }
 
   .text {
     max-width: 90%;
+    margin-top: 0;
   }
 
   .heart-tree {
@@ -122,7 +124,7 @@ body {
 <div class="counter" id="contador"></div>
 
 <script>
-// CONTADOR
+// ================= CONTADOR =================
 const inicio = new Date("2023-10-03T00:00:00");
 
 function actualizarContador() {
@@ -145,14 +147,24 @@ function actualizarContador() {
 setInterval(actualizarContador, 1000);
 actualizarContador();
 
-// CORAZÓN FORMÁNDOSE
+// ================= CORAZÓN MÁS LLENO =================
 const heartTree = document.getElementById("heartTree");
-const puntos = [
+
+/* puntos base */
+const base = [
   [130,25],[110,15],[90,15],[70,25],[55,45],
   [55,75],[75,105],[105,135],[130,160],
   [155,135],[185,105],[205,75],[205,45],
   [190,25],[170,15],[150,15]
 ];
+
+/* duplicamos y rellenamos */
+const puntos = [];
+base.forEach(p => {
+  puntos.push(p);
+  puntos.push([p[0]+10, p[1]+10]);
+  puntos.push([p[0]-8, p[1]+6]);
+});
 
 puntos.forEach((p,i)=>{
   const h=document.createElement("div");
@@ -160,11 +172,11 @@ puntos.forEach((p,i)=>{
   h.innerHTML="❤️";
   h.style.left=p[0]+"px";
   h.style.top=p[1]+"px";
-  h.style.animationDelay=(i*0.3)+"s";
+  h.style.animationDelay=(i*0.12)+"s";
   heartTree.appendChild(h);
 });
 
-// PÉTALOS
+// ================= PÉTALOS =================
 function crearPetalo(){
   const p=document.createElement("div");
   p.className="petalo";
