@@ -24,7 +24,7 @@ body {
   font-weight: bold;
 }
 
-/* CONTENEDOR */
+/* CONTENEDOR CENTRAL */
 .container {
   display: flex;
   align-items: center;
@@ -32,6 +32,7 @@ body {
   height: 100vh;
   padding: 20px;
   gap: 30px;
+  transform: translateY(-40px); /* 👈 SUBE TODO el bloque */
 }
 
 /* CORAZÓN */
@@ -44,10 +45,10 @@ body {
 
 .leaf {
   position: absolute;
-  font-size: 16px;
+  font-size: 15px;
   color: #ff2f68;
   opacity: 0;
-  animation: aparecer 0.8s forwards;
+  animation: aparecer 0.7s forwards;
 }
 
 @keyframes aparecer {
@@ -59,7 +60,6 @@ body {
   max-width: 240px;
   font-size: 16px;
   line-height: 1.5;
-  margin-top: -20px; /* 👈 SUBE un poco el texto */
 }
 
 /* CONTADOR */
@@ -89,11 +89,11 @@ body {
     flex-direction: column;
     text-align: center;
     padding-top: 90px;
+    transform: translateY(-20px); /* ajuste fino en celular */
   }
 
   .text {
     max-width: 90%;
-    margin-top: 0;
   }
 
   .heart-tree {
@@ -147,23 +147,24 @@ function actualizarContador() {
 setInterval(actualizarContador, 1000);
 actualizarContador();
 
-// ================= CORAZÓN MÁS LLENO =================
+// ================= CORAZÓN MÁS ORGÁNICO =================
 const heartTree = document.getElementById("heartTree");
 
-/* puntos base */
 const base = [
-  [130,25],[110,15],[90,15],[70,25],[55,45],
-  [55,75],[75,105],[105,135],[130,160],
-  [155,135],[185,105],[205,75],[205,45],
-  [190,25],[170,15],[150,15]
+  [130,20],[110,10],[90,10],[70,20],[55,40],
+  [50,65],[60,90],[80,115],[105,140],[130,160],
+  [155,140],[180,115],[200,90],[210,65],[205,40],
+  [190,20],[170,10],[150,10]
 ];
 
-/* duplicamos y rellenamos */
 const puntos = [];
 base.forEach(p => {
   puntos.push(p);
-  puntos.push([p[0]+10, p[1]+10]);
+  puntos.push([p[0]+8, p[1]+6]);
   puntos.push([p[0]-8, p[1]+6]);
+  if (Math.random() > 0.5) {
+    puntos.push([p[0], p[1]+14]); // relleno suave interior
+  }
 });
 
 puntos.forEach((p,i)=>{
@@ -172,7 +173,7 @@ puntos.forEach((p,i)=>{
   h.innerHTML="❤️";
   h.style.left=p[0]+"px";
   h.style.top=p[1]+"px";
-  h.style.animationDelay=(i*0.12)+"s";
+  h.style.animationDelay=(i*0.08)+"s";
   heartTree.appendChild(h);
 });
 
