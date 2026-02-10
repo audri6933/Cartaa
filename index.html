@@ -20,26 +20,36 @@ body {
   justify-content: center;
   height: 100vh;
   padding: 20px;
-  gap: 20px;
+  gap: 30px;
 }
 
-.heart {
-  font-size: 140px;
-  animation: latido 1.2s infinite;
+/* CORAZÓN FORMADO */
+.heart-tree {
+  position: relative;
+  width: 260px;
+  height: 240px;
 }
 
-@keyframes latido {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+.leaf {
+  position: absolute;
+  font-size: 18px;
+  color: #ff4d6d;
+  opacity: 0;
+  animation: aparecer 0.9s forwards;
 }
 
+@keyframes aparecer {
+  to { opacity: 1; }
+}
+
+/* TEXTO */
 .text {
   max-width: 220px;
   font-size: 16px;
   line-height: 1.4;
 }
 
+/* CONTADOR */
 .counter {
   position: absolute;
   bottom: 40px;
@@ -48,6 +58,7 @@ body {
   font-size: 18px;
 }
 
+/* PÉTALOS */
 .petalo {
   position: fixed;
   top: -10px;
@@ -68,7 +79,10 @@ body {
 <body>
 
 <div class="container">
-  <div class="heart">❤️</div>
+  <!-- CORAZÓN QUE SE FORMA -->
+  <div class="heart-tree" id="heartTree"></div>
+
+  <!-- TEXTO ORIGINAL -->
   <div class="text">
     <strong>Para mi chaparrita:</strong><br><br>
     Escogería una y mil veces tu amistad.<br>
@@ -79,7 +93,7 @@ body {
 <div class="counter" id="contador"></div>
 
 <script>
-// CONTADOR
+// ================= CONTADOR (SIN CAMBIOS) =================
 const inicio = new Date("2023-10-03T00:00:00");
 
 function actualizarContador() {
@@ -102,7 +116,27 @@ function actualizarContador() {
 setInterval(actualizarContador, 1000);
 actualizarContador();
 
-// CORAZONES CAYENDO
+// ================= CORAZÓN FORMÁNDOSE =================
+const heartTree = document.getElementById("heartTree");
+
+const puntosCorazon = [
+  [130,25],[110,15],[90,15],[70,25],[55,45],
+  [55,75],[75,105],[105,135],[130,160],
+  [155,135],[185,105],[205,75],[205,45],
+  [190,25],[170,15],[150,15]
+];
+
+puntosCorazon.forEach((p, i) => {
+  const hoja = document.createElement("div");
+  hoja.className = "leaf";
+  hoja.innerHTML = "❤️";
+  hoja.style.left = p[0] + "px";
+  hoja.style.top = p[1] + "px";
+  hoja.style.animationDelay = (i * 0.3) + "s";
+  heartTree.appendChild(hoja);
+});
+
+// ================= PÉTALOS CAYENDO (SIN CAMBIOS) =================
 function crearPetalo() {
   const petalo = document.createElement("div");
   petalo.classList.add("petalo");
