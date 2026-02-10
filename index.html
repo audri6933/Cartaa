@@ -35,6 +35,22 @@ body {
   transform: translateY(-40px);
 }
 
+/* BLOQUE TEXTO + CORAZÓN */
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* TEXTO SUPERIOR */
+.text-top {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 260px;
+  margin-bottom: 20px;
+}
+
 /* CORAZÓN */
 .heart-tree {
   position: relative;
@@ -55,11 +71,13 @@ body {
   to { opacity: 1; }
 }
 
-/* TEXTO */
-.text {
-  max-width: 240px;
+/* TEXTO INFERIOR */
+.text-bottom {
+  text-align: center;
   font-size: 16px;
   line-height: 1.5;
+  max-width: 260px;
+  margin-top: 20px;
 }
 
 /* CONTADOR */
@@ -86,19 +104,21 @@ body {
 /* 📱 RESPONSIVE */
 @media (max-width: 768px) {
   .container {
-    flex-direction: column;
-    text-align: center;
-    padding-top: 90px;
     transform: translateY(-20px);
   }
 
-  .heart-tree {
-    margin-bottom: 10px;
+  .text-top,
+  .text-bottom {
+    max-width: 90%;
+    font-size: 15px;
   }
 
-  .text {
-    max-width: 90%;
-    margin-top: 35px; /* 👈 FRASE MÁS ABAJO */
+  .text-top {
+    margin-bottom: 16px;
+  }
+
+  .text-bottom {
+    margin-top: 16px;
   }
 }
 </style>
@@ -109,16 +129,24 @@ body {
 <div class="title">Para mi chaparrita</div>
 
 <div class="container">
-  <!-- CORAZÓN -->
-  <div class="heart-tree" id="heartTree"></div>
+  <div class="block">
 
-  <!-- TEXTO -->
-  <div class="text">
-    <strong>Para mi chaparrita:</strong><br><br>
-    Escogería una y mil veces tu amistad.<br>
-    Gracias por llegar a mi vida y quedarte.<br><br>
-    <em>Porque sin buscarte, te fuiste quedando…<br>
-    y sin darme cuenta, ya eras parte de mí.</em>
+    <!-- TEXTO ARRIBA -->
+    <div class="text-top">
+      <strong>Para mi chaparrita:</strong><br><br>
+      Escogería una y mil veces tu amistad.<br>
+      Gracias por llegar a mi vida y quedarte.
+    </div>
+
+    <!-- CORAZÓN -->
+    <div class="heart-tree" id="heartTree"></div>
+
+    <!-- TEXTO ABAJO -->
+    <div class="text-bottom">
+      <em>Porque sin buscarte, te fuiste quedando…<br>
+      y sin darme cuenta, ya eras parte de mí.</em>
+    </div>
+
   </div>
 </div>
 
